@@ -18,5 +18,9 @@ git add
 git commit -m
 git push
 git pull
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> d58476dfaa27100b9255e217ca7d8bc8bfb561a4
 IDEA
 Mysql
