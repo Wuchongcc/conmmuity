@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AccessTokenDTO;
 import com.example.demo.dto.GithubUser;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.User;
 import com.example.demo.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,16 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${github.client.id}")
     private String client_id;
@@ -41,9 +43,16 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirect_uri);
         accessTokenDTO.setState(state);
         String  accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
-        if(user != null){
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+        if(githubUser != null){
             //登录成功，写cookie和session
+            User user = new User();
+            user.setName(githubUser.getName());
+            user.setAccount_id(String.valueOf(githubUser.getId()));
+            user.setGmt_modified(System.currentTimeMillis().);//系统生成的时间
+            user.setGmt_create(user.getGmt_modified());
+            user.setToken(UUID.randomUUID().toString());
+            userMapper.addUser(user);
             request.getSession().setAttribute("user",user);
             System.out.println(user.getName());
             return "redirect:/";
