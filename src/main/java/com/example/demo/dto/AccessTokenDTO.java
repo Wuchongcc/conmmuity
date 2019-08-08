@@ -15,7 +15,7 @@ public class AccessTokenDTO {
         this.client_id = client_id;
     }
 
-    public String getClient_secret(String client_secret) {
+    public String getClient_secret() {
         return client_secret;
     }
 
@@ -31,19 +31,19 @@ public class AccessTokenDTO {
         this.code = code;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public String getRedirect_uri() {
         return redirect_uri;
     }
 
     public void setRedirect_uri(String redirect_uri) {
         this.redirect_uri = redirect_uri;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,27 +27,36 @@ public class AuthorizeController {
     @Value("${github.client.secret}")
     private String client_secret;
 
-    @Value("${github.Redirect.uri}")
+    @Value("${github.redirect.uri}")
     private String redirect_uri;
 
-    @GetMapping("/callback")
+    @GetMapping("/logincallback")
     public String Callback(@RequestParam(name="code") String code,
-                           @RequestParam(name="state") String state){
+                           @RequestParam(name="state") String state,
+                           HttpServletRequest request){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(client_id);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.getClient_secret(client_secret);
+        accessTokenDTO.setClient_secret(client_secret);
         accessTokenDTO.setRedirect_uri(redirect_uri);
         accessTokenDTO.setState(state);
-        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        String  accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
-        ArrayList<GithubUser> list = new ArrayList<GithubUser>();
-        list.add(user);
-        for (GithubUser users:list
-             ) {
-            System.out.println(users.getCompany());
+        if(user != null){
+            //登录成功，写cookie和session
+            request.getSession().setAttribute("user",user);
+            System.out.println(user.getName());
+            return "redirect:/";
+        }else{
+            //登录失败，请重新登录
+            return "redirect:/";
         }
-        githubProvider.getAccessToken(accessTokenDTO);
-        return "index";
+//        ArrayList<GithubUser> list = new ArrayList<GithubUser>();
+//        list.add(user);
+//        for (GithubUser users:list
+//             ) {
+//            System.out.println(users);
+//        }
+
     }
 }
