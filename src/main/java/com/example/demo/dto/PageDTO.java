@@ -15,9 +15,11 @@ public class PageDTO {
     private Integer page;//当前页数
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage;//初始化总页数
+    private Integer offset;
 
     //分页数量
     public void setPage(Integer toltalCount, Integer page, Integer size) {
+        offset = size * (page-1);
         if (toltalCount % size == 0) {
             totalPage = toltalCount / size;
         } else {

@@ -27,11 +27,28 @@ public class QuestionService {
         //获得全部分页的数量
         Integer totalCount = questionMapper.count();
         pageDTO.setPage(totalCount,page,size);
-
         Integer offset = size * (page-1);
         List<Question> questions = questionMapper.PageList(offset,size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for (Question question:questions){
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        pageDTO.setQuestions(questionDTOList);
+        return pageDTO;
+    }
 
+    public PageDTO ListByUserId(Integer userId, Integer page, Integer size) {
+        PageDTO pageDTO = new PageDTO();
+        //获得全部分页的数量
+        Integer totalCount = questionMapper.countByUserId(userId);
+        pageDTO.setPage(totalCount,page,size);
+        Integer offset = size * (page-1);
+        List<Question> questions = questionMapper.ListByUserId(userId,offset,size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question:questions){
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
