@@ -11,3 +11,4 @@ public class GithubUser {
     private String company;
     private String login;
 }
+

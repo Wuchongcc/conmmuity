@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PageDTO;
-import com.example.demo.dto.QuestionDTO;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.service.QuestionService;
@@ -12,11 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProfileController {
+
     @Autowired
     private UserMapper userMapper;
 
@@ -27,7 +26,7 @@ public class ProfileController {
     public String Profile(@PathVariable(name = "action") String action,
                           Model model,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                          @RequestParam(name = "size", defaultValue = "2") Integer size,
+                          @RequestParam(name = "size", defaultValue = "3") Integer size,
                           HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {

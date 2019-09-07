@@ -4,17 +4,15 @@ import com.example.demo.model.User;
 import lombok.Data;
 
 @Data
-public class QuestionDTO {
+public class CommentDTO {
     private Long id;
-    private String title;
-    private String description;
+    private Long parent_id;
+    private Integer type;
+    private Long commentator;
     private Long gmt_create;
     private Long gmt_modified;
-    private Long creator;
-    private Integer comment_count;
-    private Integer view_count;
     private Integer like_count;
-    private String tag;
-    private String avatarUrl;
+    private Integer comment_count;
+    private String content;
     private User user;
 }

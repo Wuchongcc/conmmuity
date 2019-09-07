@@ -17,7 +17,7 @@ public class IndexController {
     @GetMapping("/")
     public String Index(Model model,
                         @RequestParam(name = "page",defaultValue = "1")Integer page,
-                        @RequestParam(name = "size",defaultValue = "2")Integer size){
+                        @RequestParam(name = "size",defaultValue = "4")Integer size){
         PageDTO questionPageDTO = questionService.List(page,size);
         model.addAttribute("questionPage",questionPageDTO);
         return "index";
